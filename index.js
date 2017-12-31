@@ -10,6 +10,11 @@ module.exports = (...args) => {
       bl.append(data)
     })
   }
+  if (child.stderr) {
+    child.stderr.on('data', data => {
+      bl.append(data);
+    })
+  }
 
   const promise = new Promise((resolve, reject) => {
     child.on('error', reject)
@@ -18,7 +23,7 @@ module.exports = (...args) => {
       if (code === 0) {
         resolve(bl)
       } else {
-        reject(new Error(`child exited with code ${code}`))
+        reject(new Error(`${bl} child exited with code ${code}`))
       }
     })
   })
